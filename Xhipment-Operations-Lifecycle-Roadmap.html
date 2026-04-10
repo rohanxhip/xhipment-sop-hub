@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Xhipment — Operations Lifecycle Roadmap</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #1e293b;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .hdr {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0f172a 100%);
+    padding: 36px 60px 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .hdr-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .hdr-icon { width: 48px; height: 48px; background: linear-gradient(135deg,#3b82f6,#6366f1); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(59,130,246,0.4); }
+  .hdr h1 { color: #f8fafc; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+  .hdr-sub { color: #94a3b8; font-size: 13.5px; max-width: 700px; line-height: 1.55; margin-top: 6px; }
+  .hdr-pills { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+  .pill {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #cbd5e1; font-size: 12px; font-weight: 500;
+    padding: 5px 14px; border-radius: 20px;
+  }
+  .pill-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── MODE TOGGLE ── */
+  .mode-bar {
+    background: #1e293b;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 14px 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .mode-label { font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+  .mode-btn {
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    background: transparent;
+    font-size: 12px; font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mode-btn:hover { color: #cbd5e1; border-color: rgba(255,255,255,0.2); }
+  .mode-btn.active-air { background: #0369a1; border-color: #0ea5e9; color: #fff; }
+  .mode-btn.active-ocean { background: #1d4ed8; border-color: #3b82f6; color: #fff; }
+  .mode-btn.active-both { background: #6d28d9; border-color: #8b5cf6; color: #fff; }
+
+  /* ── CANVAS ── */
+  .canvas { padding: 48px 60px 80px; max-width: 1300px; margin: 0 auto; }
+
+  /* ── TIMELINE SPINE ── */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(59,130,246,0.8), rgba(99,102,241,0.3), rgba(59,130,246,0.1));
+    transform: translateX(-50%);
+  }
+
+  /* ── PHASE ROW ── */
+  .phase-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 8px;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+  .phase-row.visible { opacity: 1; transform: translateY(0); }
+
+  /* Left-side phases */
+  .phase-left { grid-column: 1; padding-right: 32px; }
+  .phase-right { grid-column: 3; padding-left: 32px; }
+  .phase-empty { grid-column: 1; } /* for right-side alignment */
+
+  /* ── SPINE NODE ── */
+  .spine { grid-column: 2; display: flex; flex-direction: column; align-items: center; padding-top: 22px; }
+  .node {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800;
+    color: #fff;
+    border: 3px solid #0f172a;
+    box-shadow: 0 0 0 2px currentColor, 0 4px 12px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+    z-index: 2;
+    position: relative;
+  }
+  .connector { width: 2px; flex: 1; min-height: 24px; background: rgba(255,255,255,0.06); margin-top: 4px; }
+
+  /* ── PHASE CARD ── */
+  .pcard {
+    border-radius: 16px;
+    padding: 20px 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: #1e293b;
+    position: relative;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .pcard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .pcard.active { border-color: rgba(255,255,255,0.3) !important; }
+
+  /* Arrow pointers toward spine */
+  .phase-left .pcard::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 30px;
+    border: 10px solid transparent;
+    border-left-color: #1e293b;
+  }
+  .phase-right .pcard::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 30px;
+    border: 10px solid transparent;
+    border-right-color: #1e293b;
+  }
+
+  .pcard-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .pcard-icon { font-size: 22px; flex-shrink: 0; }
+  .pcard-title { font-size: 14px; font-weight: 800; color: #f1f5f9; }
+  .pcard-phase { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-left: auto; }
+  .pcard-desc { font-size: 12px; color: #94a3b8; line-height: 1.55; margin-bottom: 12px; }
+
+  /* Sub-topics inside card */
+  .pcard-topics { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+  .ptopic {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 11.5px;
+    color: #cbd5e1;
+    padding: 5px 8px;
+    border-radius: 7px;
+    background: rgba(255,255,255,0.04);
+    line-height: 1.4;
+  }
+  .ptopic-num {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800;
+    flex-shrink: 0;
+    color: #fff;
+  }
+
+  /* Ownership + Mode tags */
+  .pcard-footer { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; }
+  .ftag {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+  .ftag-air { background: #0c4a6e; color: #7dd3fc; }
+  .ftag-ocean { background: #1e3a8a; color: #93c5fd; }
+  .ftag-both { background: #14532d; color: #86efac; }
+  .ftag-owner { background: rgba(255,255,255,0.08); color: #94a3b8; }
+  .sop-count { margin-left: auto; font-size: 10px; color: #64748b; font-weight: 600; }
+
+  /* SOP Status bar */
+  .status-bar { display: flex; gap: 4px; margin-top: 8px; }
+  .sbar { height: 4px; border-radius: 2px; flex: 1; }
+  .sbar-done { background: #22c55e; }
+  .sbar-prog { background: #f59e0b; }
+  .sbar-todo { background: #334155; }
+
+  /* ── SECTION HEADER (between phases) ── */
+  .section-divider {
+    text-align: center;
+    margin: 28px 0 20px;
+    position: relative;
+  }
+  .section-divider span {
+    background: #0f172a;
+    padding: 0 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #334155;
+    position: relative;
+    z-index: 1;
+  }
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    display: none;
+    background: #253447;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 12px;
+    color: #cbd5e1;
+  }
+  .detail-panel.open { display: block; }
+  .dp-title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .dp-row { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; }
+  .dp-row::before { content: '▸'; color: #3b82f6; font-size: 10px; margin-top: 2px; flex-shrink: 0; }
+  .dp-kpi { font-size: 10px; padding: 2px 8px; border-radius: 6px; background: rgba(59,130,246,0.15); color: #60a5fa; font-weight: 600; margin-top: 10px; display: inline-block; }
+
+  /* ── LEGEND BOX ── */
+  .legend-box {
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 36px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .leg-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+  .leg-items { display: flex; gap: 14px; flex-wrap: wrap; }
+  .leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #94a3b8; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .leg-bar { width: 24px; height: 4px; border-radius: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hdr, .mode-bar, .canvas { padding-left: 20px; padding-right: 20px; }
+    .timeline::before { display: none; }
+    .phase-row { grid-template-columns: 1fr; }
+    .spine { display: none; }
+    .phase-left, .phase-right { padding: 0; margin-bottom: 16px; }
+    .phase-left .pcard::after, .phase-right .pcard::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-icon">🗺️</div>
+    <div>
+      <h1>Xhipment — Operations Lifecycle Roadmap</h1>
+    </div>
+  </div>
+  <div class="hdr-sub">End-to-end operations flow across all 10 phases of a freight forwarding shipment — from first customer contact to final Proof of Delivery. Each phase shows the key topics, SOP status, and responsible team.</div>
+  <div class="hdr-pills">
+    <div class="pill"><div class="pill-dot" style="background:#22c55e"></div>SOP Complete</div>
+    <div class="pill"><div class="pill-dot" style="background:#f59e0b"></div>SOP In Progress</div>
+    <div class="pill"><div class="pill-dot" style="background:#334155"></div>SOP Needed</div>
+    <div class="pill"><div class="pill-dot" style="background:#7dd3fc"></div>Air Freight</div>
+    <div class="pill"><div class="pill-dot" style="background:#93c5fd"></div>Ocean Freight</div>
+  </div>
+</div>
+
+<!-- MODE BAR -->
+<div class="mode-bar">
+  <span class="mode-label">View Mode:</span>
+  <button class="mode-btn active-both" onclick="setMode('both',this)">🌐 All Modes</button>
+  <button class="mode-btn" onclick="setMode('air',this)">✈️ Air Only</button>
+  <button class="mode-btn" onclick="setMode('ocean',this)">🚢 Ocean Only</button>
+</div>
+
+<!-- CANVAS -->
+<div class="canvas">
+
+  <!-- LEGEND -->
+  <div class="legend-box">
+    <span class="leg-title">SOP Progress</span>
+    <div class="leg-items">
+      <div class="leg-item"><div class="leg-bar" style="background:#22c55e"></div>Complete</div>
+      <div class="leg-item"><div class="leg-bar" style="background:#f59e0b"></div>In Progress</div>
+      <div class="leg-item"><div class="leg-bar" style="background:#334155"></div>Needed</div>
+    </div>
+    <span class="leg-title" style="margin-left:12px">Click any card</span>
+    <span style="font-size:11px;color:#475569">to see key KPIs &amp; sub-processes</span>
+  </div>
+
+  <div class="timeline" id="timeline">
+
+    <!-- ROW 1: Sales & Quoting (LEFT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left">
+        <div class="pcard" style="border-left: 4px solid #2563eb" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">💬</span>
+            <span class="pcard-title">Sales &amp; Quoting</span>
+            <span class="pcard-phase" style="background:#1e3a8a;color:#93c5fd">Phase 1</span>
+          </div>
+          <div class="pcard-desc">Customer acquisition, rate quoting, and commercial negotiations before a shipment is booked.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#2563eb">1</div>Customer onboarding &amp; KYC collection</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#2563eb">2</div>FedEx / ICL quoting tool usage</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#2563eb">3</div>Disaggregated pricing calculator</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#2563eb">4</div>Cross-selling &amp; account management</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#2563eb">5</div>Payment &amp; collections process</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:2" title="Done"></div>
+            <div class="sbar sbar-todo" style="flex:3" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Sales / Ops</span>
+            <span class="sop-count">2 of 5 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Quote-to-booking conversion rate (&gt;30% target)</div>
+            <div class="dp-row">Quote TAT: &lt;4 hours for standard lanes</div>
+            <div class="dp-row">Customer onboarding time: &lt;24 hours</div>
+            <div class="dp-row">Outstanding receivables &lt;45 days</div>
+            <div class="dp-kpi">🔗 SOPs: FedEx Quoting Tool, Disaggregated Calculator</div>
+          </div>
+        </div>
+      </div>
+      <div class="spine">
+        <div class="node" style="background:#2563eb;box-shadow:0 0 0 2px #2563eb,0 4px 20px rgba(37,99,235,0.5)">1</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right"><!-- Empty --></div>
+    </div>
+
+    <!-- ROW 2: Procurement (RIGHT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left"><!-- Empty --></div>
+      <div class="spine">
+        <div class="node" style="background:#d97706;box-shadow:0 0 0 2px #d97706,0 4px 20px rgba(217,119,6,0.5)">2</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right">
+        <div class="pcard" style="border-left: 4px solid #d97706" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🛒</span>
+            <span class="pcard-title">Procurement &amp; Vendor Management</span>
+            <span class="pcard-phase" style="background:#78350f;color:#fcd34d">Phase 2</span>
+          </div>
+          <div class="pcard-desc">Sourcing carrier rates, managing pickup vendor quotes, and coordinating procurement-to-operations handoff.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#d97706">1</div>Quote TAT tracking &amp; Daily Flash setup</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#d97706">2</div>Pickup quote → Operations handoff process</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#d97706">3</div>ICL payments &amp; settlement SOP</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#d97706">4</div>Vendor performance monitoring</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:1" title="Done"></div>
+            <div class="sbar sbar-prog" style="flex:1" title="In Progress"></div>
+            <div class="sbar sbar-todo" style="flex:2" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Procurement</span>
+            <span class="sop-count">1 of 4 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Procurement quote TAT: &lt;2 hours (P0 lanes)</div>
+            <div class="dp-row">Pickup vendor confirmation rate &gt;95%</div>
+            <div class="dp-row">Procurement-to-ops handoff completeness score</div>
+            <div class="dp-row">Vendor invoice accuracy rate</div>
+            <div class="dp-kpi">🔗 SOPs: FedEx Quoting Tool, Disaggregated Calculator, ICL Payments</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider"><span>Pre-Shipment Complete → Execution Begins</span></div>
+
+    <!-- ROW 3: Document Verification (LEFT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left">
+        <div class="pcard" style="border-left: 4px solid #7c3aed" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">📋</span>
+            <span class="pcard-title">Document Verification &amp; Compliance</span>
+            <span class="pcard-phase" style="background:#4c1d95;color:#c4b5fd">Phase 3</span>
+          </div>
+          <div class="pcard-desc">Validating all shipper documents, checking regulatory compliance, and registering required identifiers before cargo moves.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#7c3aed">1</div>New customer document verification checklist</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#7c3aed">2</div>Existing customer document checklist</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#7c3aed">3</div>AD Code &amp; IFSC registration guide</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#7c3aed">4</div>Cargo-specific document requirements</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#7c3aed">5</div>Document exception handling &amp; FAQ</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:4" title="Done"></div>
+            <div class="sbar sbar-prog" style="flex:1" title="In Progress"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Origin Ops / Rohan</span>
+            <span class="sop-count">4 of 5 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Document completeness rate at first submission: &gt;90%</div>
+            <div class="dp-row">Doc verification TAT: &lt;2 hours from receipt</div>
+            <div class="dp-row">AD Code registration completion: pre-first shipment</div>
+            <div class="dp-row">Exception ticket rate per 100 shipments</div>
+            <div class="dp-kpi">🔗 SOPs: Doc Verification SOP, AD Code Guide, Exception FAQ</div>
+          </div>
+        </div>
+      </div>
+      <div class="spine">
+        <div class="node" style="background:#7c3aed;box-shadow:0 0 0 2px #7c3aed,0 4px 20px rgba(124,58,237,0.5)">3</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right"><!-- Empty --></div>
+    </div>
+
+    <!-- ROW 4: Pickup Operations (RIGHT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left"><!-- Empty --></div>
+      <div class="spine">
+        <div class="node" style="background:#059669;box-shadow:0 0 0 2px #059669,0 4px 20px rgba(5,150,105,0.5)">4</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right">
+        <div class="pcard" style="border-left: 4px solid #059669" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🚛</span>
+            <span class="pcard-title">Pickup Operations</span>
+            <span class="pcard-phase" style="background:#064e3b;color:#6ee7b7">Phase 4</span>
+          </div>
+          <div class="pcard-desc">Coordinating cargo pickup from shipper premises to origin CFS, port, or airport cargo terminal.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#059669">1</div>Pickup execution checklist</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#059669">2</div>Milestone &amp; TAT tracking (M1–M5)</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#059669">3</div>Warehouse-to-port / CFS coordination</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#059669">4</div>Pickup exception handling protocol</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-prog" style="flex:2" title="In Progress"></div>
+            <div class="sbar sbar-todo" style="flex:2" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Origin Ops</span>
+            <span class="sop-count">0 of 4 SOPs complete (in progress)</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Pickup on-time rate: &gt;95% of scheduled pickups</div>
+            <div class="dp-row">Vendor no-show rate: &lt;2%</div>
+            <div class="dp-row">Cargo damage at pickup: &lt;0.1%</div>
+            <div class="dp-row">Pickup-to-port/CFS TAT within agreed window</div>
+            <div class="dp-kpi">🔗 SOPs: Pickup Operations SOP (in progress)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 5: Consol Creation (LEFT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left">
+        <div class="pcard" style="border-left: 4px solid #db2777" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🗃️</span>
+            <span class="pcard-title">Consolidation &amp; Load Planning</span>
+            <span class="pcard-phase" style="background:#831843;color:#f9a8d4">Phase 5</span>
+          </div>
+          <div class="pcard-desc">Building LCL/air consolidations in XAP, mapping Quote IDs for margin visibility, and finalizing vessel/flight nominations.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#db2777">1</div>Consol creation &amp; Quote ID mapping in XAP</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#db2777">2</div>Gross margin review pre-sailing</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#db2777">3</div>LCL Co-Load RFQ creation (Ocean)</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#db2777">4</div>ULD build-up &amp; HAWB-MAWB mapping (Air)</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-todo" style="flex:4" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Origin Ops</span>
+            <span class="sop-count">0 of 4 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Consol fill rate: &gt;80% by volume</div>
+            <div class="dp-row">Gross margin per consol: reviewed before cut-off</div>
+            <div class="dp-row">Margin variance &lt;5% vs. booked quote</div>
+            <div class="dp-row">Consol creation lead time vs. vessel cut-off</div>
+            <div class="dp-kpi">🔗 SOPs: Consol Creation SOP (needed — P0)</div>
+          </div>
+        </div>
+      </div>
+      <div class="spine">
+        <div class="node" style="background:#db2777;box-shadow:0 0 0 2px #db2777,0 4px 20px rgba(219,39,119,0.5)">5</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right"><!-- Empty --></div>
+    </div>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider"><span>Cargo Dispatched → Export Documentation</span></div>
+
+    <!-- ROW 6: Export Operations (RIGHT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left"><!-- Empty --></div>
+      <div class="spine">
+        <div class="node" style="background:#0d9488;box-shadow:0 0 0 2px #0d9488,0 4px 20px rgba(13,148,136,0.5)">6</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right">
+        <div class="pcard" style="border-left: 4px solid #0d9488" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">📤</span>
+            <span class="pcard-title">Export &amp; Origin Operations</span>
+            <span class="pcard-phase" style="background:#134e4a;color:#5eead4">Phase 6</span>
+          </div>
+          <div class="pcard-desc">Filing shipping instructions, generating labels, completing export documentation, and managing cut-offs before cargo departure.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#0d9488">1</div>Shipping Instruction filing — multiple liners</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#0d9488">2</div>FedEx label creation (Air)</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#0d9488">3</div>Commercial Invoice &amp; Packing List prep</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#0d9488">4</div>XAP shipment execution &amp; milestones</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#0d9488">5</div>Vessel/flight booking &amp; cut-off management</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:3" title="Done"></div>
+            <div class="sbar sbar-todo" style="flex:2" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Origin Ops</span>
+            <span class="sop-count">3 of 5 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">SI filing accuracy: 0 B/L amendments due to ops error</div>
+            <div class="dp-row">Cut-off compliance: &gt;98% shipments make nominated vessel/flight</div>
+            <div class="dp-row">Label generation TAT: same day as booking confirmation</div>
+            <div class="dp-row">CI/PL rejection rate at customs: &lt;1%</div>
+            <div class="dp-kpi">🔗 SOPs: SI Filing, FedEx Label, CI/PL Guide, XAP Guide</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 7: Customs Clearance (LEFT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left">
+        <div class="pcard" style="border-left: 4px solid #dc2626" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🛃</span>
+            <span class="pcard-title">Customs Clearance (Export &amp; Import)</span>
+            <span class="pcard-phase" style="background:#7f1d1d;color:#fca5a5">Phase 7</span>
+          </div>
+          <div class="pcard-desc">Filing export shipping bills in India (ICES) and coordinating US CBP import clearance, ISF/AMS, and duty payments.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#dc2626">1</div>Export Shipping Bill filing — India ICES</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#dc2626">2</div>ISF 10+2 / AMS filing for US imports</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#dc2626">3</div>US customs duty assessment (HTS)</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#dc2626">4</div>Master CI for destination clearance</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#dc2626">5</div>CBP exam response &amp; duty payment</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:2" title="Done"></div>
+            <div class="sbar sbar-prog" style="flex:1" title="In Progress"></div>
+            <div class="sbar sbar-todo" style="flex:2" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Customs / Ops</span>
+            <span class="sop-count">2 of 5 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Export LEO obtained within 24 hours of gate-in</div>
+            <div class="dp-row">ISF filing: 100% before 24h vessel departure</div>
+            <div class="dp-row">Customs hold/exam rate: &lt;3% of shipments</div>
+            <div class="dp-row">Duty recovery rate: 100% from shipper on time</div>
+            <div class="dp-kpi">🔗 SOPs: Duty Assessment Guide, Master CI SOP, US Clearance SOP</div>
+          </div>
+        </div>
+      </div>
+      <div class="spine">
+        <div class="node" style="background:#dc2626;box-shadow:0 0 0 2px #dc2626,0 4px 20px rgba(220,38,38,0.5)">7</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right"><!-- Empty --></div>
+    </div>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider"><span>Cargo Loaded &amp; Departed → In Transit</span></div>
+
+    <!-- ROW 8: In-Transit (RIGHT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left"><!-- Empty --></div>
+      <div class="spine">
+        <div class="node" style="background:#475569;box-shadow:0 0 0 2px #475569,0 4px 20px rgba(71,85,105,0.5)">8</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right">
+        <div class="pcard" style="border-left: 4px solid #475569" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🛫</span>
+            <span class="pcard-title">In-Transit Monitoring &amp; Exception Management</span>
+            <span class="pcard-phase" style="background:#1e293b;color:#94a3b8">Phase 8</span>
+          </div>
+          <div class="pcard-desc">Proactive shipment tracking, milestone updates to customers, and rapid response to any in-transit exceptions.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#475569">1</div>Vessel / flight departure confirmation</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#475569">2</div>ETA tracking &amp; customer milestone updates</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#475569">3</div>Exception management — delays, rollovers, damage</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#475569">4</div>Pre-arrival notification to destination agent</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:1" title="Done"></div>
+            <div class="sbar sbar-todo" style="flex:3" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Origin Ops / CS</span>
+            <span class="sop-count">1 of 4 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Proactive exception notification &lt;2 hours of event</div>
+            <div class="dp-row">Customer update frequency: at each milestone</div>
+            <div class="dp-row">Rollover / cancellation recovery TAT: &lt;24 hours</div>
+            <div class="dp-row">Pre-alert sent: 2+ days before vessel arrival</div>
+            <div class="dp-kpi">🔗 SOPs: Exception Management &amp; Troubleshooting Guide v3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 9: Destination (LEFT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left">
+        <div class="pcard" style="border-left: 4px solid #1d4ed8" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🏢</span>
+            <span class="pcard-title">Destination Operations &amp; Delivery</span>
+            <span class="pcard-phase" style="background:#1e3a8a;color:#93c5fd">Phase 9</span>
+          </div>
+          <div class="pcard-desc">Cargo receipt at US port/airport, deconsolidation, customs release, last-mile delivery, and POD collection.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#1d4ed8">1</div>Cargo arrival &amp; deconsolidation at US CFS</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#1d4ed8">2</div>Last-mile delivery coordination</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#1d4ed8">3</div>Amazon FBA compliance &amp; appointment booking</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#1d4ed8">4</div>POD collection &amp; shipment closure in XAP</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-todo" style="flex:4" title="Needed"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 Import Ops / Akshay</span>
+            <span class="sop-count">0 of 4 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">Delivery success rate: &gt;98% first-attempt delivery</div>
+            <div class="dp-row">POD collection TAT: within 24 hours of delivery</div>
+            <div class="dp-row">FBA appointment adherence: &gt;95%</div>
+            <div class="dp-row">Shipment closure in XAP within 48 hours of POD</div>
+            <div class="dp-kpi">🔗 SOPs: Master CI SOP (done) | Delivery &amp; POD SOPs (needed)</div>
+          </div>
+        </div>
+      </div>
+      <div class="spine">
+        <div class="node" style="background:#1d4ed8;box-shadow:0 0 0 2px #1d4ed8,0 4px 20px rgba(29,78,216,0.5)">9</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right"><!-- Empty --></div>
+    </div>
+
+    <!-- ROW 10: Customer Service (RIGHT) -->
+    <div class="phase-row" data-modes="air ocean">
+      <div class="phase-left"><!-- Empty --></div>
+      <div class="spine">
+        <div class="node" style="background:#7c2d12;box-shadow:0 0 0 2px #7c2d12,0 4px 20px rgba(124,45,18,0.5)">10</div>
+        <div class="connector"></div>
+      </div>
+      <div class="phase-right">
+        <div class="pcard" style="border-left: 4px solid #ea580c" onclick="toggleDetail(this)">
+          <div class="pcard-top">
+            <span class="pcard-icon">🎫</span>
+            <span class="pcard-title">Customer Service &amp; Ticket Management (CTT)</span>
+            <span class="pcard-phase" style="background:#431407;color:#fed7aa">Phase 10</span>
+          </div>
+          <div class="pcard-desc">Handling customer queries and exceptions throughout the lifecycle via Zoho Desk — applies to all phases above, not just post-shipment.</div>
+          <div class="pcard-topics">
+            <div class="ptopic"><div class="ptopic-num" style="background:#ea580c">1</div>Zoho Desk ticket handling &amp; triage SOP</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#ea580c">2</div>Inbound ticket categorization by channel &amp; lane</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#ea580c">3</div>Daily ticket status &amp; aging report</div>
+            <div class="ptopic"><div class="ptopic-num" style="background:#ea580c">4</div>SOP amendment &amp; communication process</div>
+          </div>
+          <div class="status-bar">
+            <div class="sbar sbar-done" style="flex:2" title="Done"></div>
+            <div class="sbar sbar-prog" style="flex:2" title="In Progress"></div>
+          </div>
+          <div class="pcard-footer">
+            <span class="ftag ftag-both">Air &amp; Ocean</span>
+            <span class="ftag ftag-owner">👤 CTT / Akshay</span>
+            <span class="sop-count">2 of 4 SOPs complete</span>
+          </div>
+          <div class="detail-panel">
+            <div class="dp-title">Key KPIs &amp; Metrics</div>
+            <div class="dp-row">First response SLA: &lt;1 hour for P0, &lt;4 hours for P1</div>
+            <div class="dp-row">Ticket resolution rate within SLA: &gt;90%</div>
+            <div class="dp-row">Customer satisfaction (CSAT): &gt;4.2 / 5</div>
+            <div class="dp-row">Open ticket aging &gt;48 hours: &lt;5% of total</div>
+            <div class="dp-kpi">🔗 SOPs: Zoho Ticket SOP, SOP Amendment Process</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- SUMMARY STRIP -->
+  <div style="background:#1e293b;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px 32px;margin-top:48px;max-width:900px;margin-left:auto;margin-right:auto;">
+    <div style="font-size:13px;font-weight:800;color:#f1f5f9;margin-bottom:16px;letter-spacing:-0.2px;">📊 Overall SOP Coverage Summary</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
+      <div style="background:#253447;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:24px;font-weight:800;color:#22c55e">17</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">SOPs Complete</div>
+      </div>
+      <div style="background:#253447;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:24px;font-weight:800;color:#f59e0b">8</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">SOPs In Progress</div>
+      </div>
+      <div style="background:#253447;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:24px;font-weight:800;color:#ef4444">20</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">SOPs Still Needed</div>
+      </div>
+      <div style="background:#253447;border-radius:10px;padding:14px 16px;">
+        <div style="font-size:24px;font-weight:800;color:#3b82f6">45+</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">Total Topics Mapped</div>
+      </div>
+    </div>
+    <div style="margin-top:18px;">
+      <div style="font-size:11px;color:#64748b;margin-bottom:6px;font-weight:600">Overall Completion</div>
+      <div style="background:#0f172a;border-radius:6px;height:10px;overflow:hidden;display:flex">
+        <div style="background:#22c55e;width:37%" title="Complete"></div>
+        <div style="background:#f59e0b;width:18%" title="In Progress"></div>
+        <div style="background:#1e3a8a;width:45%" title="Needed"></div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:6px;font-size:10px;color:#475569">
+        <span>🟢 37% Done</span><span>🟡 18% In Progress</span><span>🔵 45% Needed</span>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.06);padding-top:14px;">
+      <strong style="color:#f1f5f9">Priority Focus Areas:</strong> Consol Creation SOP (P0), US Import Clearance (P0), Pickup Execution Checklist (P0), Destination Operations SOPs — these are blocking operational efficiency and should be built next.
+    </div>
+  </div>
+
+</div><!-- /canvas -->
+
+<script>
+  // Animate phase rows on load
+  const rows = document.querySelectorAll('.phase-row');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  rows.forEach(r => observer.observe(r));
+
+  function toggleDetail(card) {
+    const panel = card.querySelector('.detail-panel');
+    if (!panel) return;
+    const isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.detail-panel.open').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.pcard.active').forEach(p => p.classList.remove('active'));
+    if (!isOpen) { panel.classList.add('open'); card.classList.add('active'); }
+  }
+
+  function setMode(mode, btn) {
+    document.querySelectorAll('.mode-btn').forEach(b => {
+      b.classList.remove('active-air', 'active-ocean', 'active-both');
+    });
+    btn.classList.add(mode === 'air' ? 'active-air' : mode === 'ocean' ? 'active-ocean' : 'active-both');
+
+    document.querySelectorAll('.phase-row').forEach(row => {
+      const modes = row.dataset.modes || '';
+      if (mode === 'both') {
+        row.style.opacity = '';
+        row.style.display = '';
+      } else {
+        const visible = modes.includes(mode);
+        row.style.opacity = visible ? '' : '0.25';
+        row.style.filter = visible ? '' : 'grayscale(1)';
+      }
+    });
+  }
+</script>
+</body>
+</html>
