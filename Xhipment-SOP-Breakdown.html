@@ -3,1226 +3,676 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Xhipment – SOP Breakdown by Topic</title>
+<title>Xhipment — SOP Directory</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --c1: #2563eb; --c1l: #dbeafe;
-    --c2: #059669; --c2l: #d1fae5;
-    --c3: #7c3aed; --c3l: #ede9fe;
-    --c4: #d97706; --c4l: #fef3c7;
-    --c5: #db2777; --c5l: #fce7f3;
-    --c6: #0d9488; --c6l: #ccfbf1;
-    --c7: #dc2626; --c7l: #fee2e2;
-    --c8: #64748b; --c8l: #f1f5f9;
-    --c9: #7c2d12; --c9l: #ffedd5;
-    --c10: #1d4ed8; --c10l: #e0f2fe;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f8fafc;
-    color: #1e293b;
-    min-height: 100vh;
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; color: #1e293b; }
 
   /* HEADER */
-  .hdr {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
-    padding: 36px 60px 28px;
-    border-bottom: 3px solid #2563eb;
-  }
-  .hdr-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
-  .hdr-icon { width: 48px; height: 48px; background: #2563eb; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  .hdr h1 { color: #f8fafc; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-  .hdr-sub { color: #94a3b8; font-size: 14px; max-width: 680px; line-height: 1.5; margin-top: 6px; }
-  .hdr-meta { display: flex; gap: 24px; margin-top: 18px; flex-wrap: wrap; }
-  .meta-badge {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #cbd5e1;
-    font-size: 12px;
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-weight: 500;
-  }
-  .meta-badge span { color: #60a5fa; font-weight: 700; }
+  .hdr { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); padding: 32px 48px 28px; border-bottom: 3px solid #2563eb; }
+  .hdr-top { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .hdr-icon { width: 48px; height: 48px; background: linear-gradient(135deg,#3b82f6,#6366f1); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .hdr h1 { color: #f8fafc; font-size: 24px; font-weight: 800; }
+  .hdr-sub { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+  .hdr-stats { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+  .stat-pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .stat-pill span { color: #60a5fa; }
 
-  /* FILTER BAR */
-  .filter-bar {
-    background: #fff;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 14px 60px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .filter-label { font-size: 12px; font-weight: 600; color: #64748b; margin-right: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .filter-btn {
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 1.5px solid #e2e8f0;
-    background: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    color: #475569;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .filter-btn:hover, .filter-btn.active { border-color: #2563eb; background: #dbeafe; color: #1d4ed8; }
+  /* SEARCH BAR */
+  .search-bar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 16px 48px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .search-wrap { position: relative; flex: 1; max-width: 560px; }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #94a3b8; pointer-events: none; }
+  #searchInput { width: 100%; padding: 10px 16px 10px 42px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #f8fafc; transition: all 0.2s; outline: none; }
+  #searchInput:focus { border-color: #3b82f6; background: #fff; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+  #searchInput::placeholder { color: #94a3b8; }
+  .search-count { font-size: 12px; color: #64748b; font-weight: 600; white-space: nowrap; }
+  .filter-pills { display: flex; gap: 6px; }
+  .fp { padding: 5px 12px; border-radius: 20px; border: 1.5px solid #e2e8f0; background: #fff; font-size: 11px; font-weight: 700; color: #475569; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .fp:hover { border-color: #3b82f6; color: #1d4ed8; }
+  .fp.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
 
-  /* MAIN GRID */
-  .canvas { padding: 36px 60px 60px; }
-  .phase-grid { display: flex; flex-direction: column; gap: 32px; max-width: 1200px; margin: 0 auto; }
+  /* MAIN */
+  .canvas { padding: 28px 48px 64px; max-width: 1280px; margin: 0 auto; }
 
-  /* PHASE BLOCK */
-  .phase {
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  }
-  .phase-hdr {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 24px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .phase-num {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 800; color: #fff; flex-shrink: 0;
-  }
-  .phase-title-block { flex: 1; }
-  .phase-name { font-size: 16px; font-weight: 700; color: #0f172a; }
-  .phase-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
-  .phase-count { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; }
-  .phase-arrow { font-size: 18px; color: #94a3b8; transition: transform 0.2s; margin-left: auto; }
-  .phase.open .phase-arrow { transform: rotate(180deg); }
-  .phase-body { display: none; padding: 0 24px 24px; }
-  .phase.open .phase-body { display: block; }
+  /* CATEGORY SECTION */
+  .cat-section { margin-bottom: 28px; }
+  .cat-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+  .cat-icon { font-size: 20px; }
+  .cat-title { font-size: 15px; font-weight: 800; color: #0f172a; }
+  .cat-count { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; background: #f1f5f9; color: #64748b; margin-left: auto; }
 
-  /* TOPIC CARDS GRID */
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-    margin-top: 8px;
-  }
+  /* SOP TABLE */
+  .sop-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+  .sop-row { background: #fff; border-radius: 10px; transition: all 0.15s; cursor: default; }
+  .sop-row:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+  .sop-row td { padding: 12px 16px; vertical-align: middle; }
+  .sop-row td:first-child { border-radius: 10px 0 0 10px; padding-left: 20px; border-left: 4px solid transparent; }
+  .sop-row td:last-child { border-radius: 0 10px 10px 0; padding-right: 20px; }
 
-  /* TOPIC CARD */
-  .topic {
-    border-radius: 12px;
-    border: 1.5px solid #e2e8f0;
-    padding: 16px;
-    background: #fafafa;
-    transition: all 0.15s;
-    position: relative;
-  }
-  .topic:hover { border-color: #93c5fd; background: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.08); transform: translateY(-1px); }
-  .topic-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
-  .topic-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-  .topic-name { font-size: 13px; font-weight: 700; color: #0f172a; line-height: 1.35; }
-  .topic-desc { font-size: 11.5px; color: #64748b; line-height: 1.55; margin-bottom: 10px; }
-  .topic-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-  .tag {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 8px;
-    border: 1px solid;
-  }
-  .tag-air { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
-  .tag-ocean { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
-  .tag-both { background: #f0fdf4; color: #15803d; border-color: #86efac; }
-  .tag-sales { background: #fce7f3; color: #9d174d; border-color: #f9a8d4; }
-  .tag-procurement { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
-  .tag-cs { background: #f3e8ff; color: #6b21a8; border-color: #d8b4fe; }
-  .tag-done { background: #dcfce7; color: #166534; border-color: #86efac; }
-  .tag-inprog { background: #fef9c3; color: #713f12; border-color: #fde047; }
-  .tag-todo { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
-  .tag-p0 { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
-  .tag-p1 { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+  .sop-name { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+  .sop-desc { font-size: 11.5px; color: #64748b; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-right: 4px; }
+  .tag-air { background: #e0f2fe; color: #0369a1; }
+  .tag-ocean { background: #dbeafe; color: #1d4ed8; }
+  .tag-both { background: #dcfce7; color: #15803d; }
+  .tag-sales { background: #fce7f3; color: #9d174d; }
+  .tag-proc { background: #fef3c7; color: #92400e; }
+  .tag-cs { background: #f3e8ff; color: #6b21a8; }
+  .tag-done { background: #dcfce7; color: #166534; }
+  .tag-prog { background: #fef9c3; color: #713f12; }
+  .tag-need { background: #f1f5f9; color: #475569; }
 
-  .subtopics { margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
-  .subtopic-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 7px;
-    padding: 4px 0;
-    font-size: 11px;
-    color: #475569;
-    line-height: 1.4;
-  }
-  .subtopic-item::before { content: '→'; color: #94a3b8; flex-shrink: 0; font-size: 10px; margin-top: 1px; }
+  .open-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: all 0.15s; }
+  .open-btn.has-link { background: #1d4ed8; color: #fff; }
+  .open-btn.has-link:hover { background: #1e40af; box-shadow: 0 4px 12px rgba(29,78,216,0.3); transform: translateY(-1px); }
+  .open-btn.no-link { background: #f1f5f9; color: #94a3b8; cursor: default; }
 
-  /* LEGEND */
-  .legend {
-    max-width: 1200px;
-    margin: 0 auto 24px;
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 16px 20px;
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .legend-title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-  .legend-items { display: flex; gap: 12px; flex-wrap: wrap; }
-  .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; }
+  /* NO RESULTS */
+  .no-results { text-align: center; padding: 60px 20px; color: #64748b; display: none; }
+  .no-results h3 { font-size: 18px; color: #94a3b8; margin-bottom: 8px; }
 
-  /* EXPAND ALL */
-  .controls { max-width: 1200px; margin: 0 auto 16px; display: flex; justify-content: flex-end; gap: 10px; }
-  .ctrl-btn {
-    padding: 6px 16px;
-    border-radius: 8px;
-    border: 1.5px solid #e2e8f0;
-    background: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    color: #475569;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .ctrl-btn:hover { border-color: #2563eb; color: #1d4ed8; background: #dbeafe; }
+  /* HIGHLIGHT */
+  mark { background: #fef08a; border-radius: 2px; padding: 0 1px; }
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
-    .hdr, .filter-bar, .canvas { padding-left: 20px; padding-right: 20px; }
-    .topics-grid { grid-template-columns: 1fr; }
+    .hdr, .search-bar, .canvas { padding-left: 16px; padding-right: 16px; }
+    .sop-table { font-size: 12px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="hdr">
   <div class="hdr-top">
-    <div class="hdr-icon">📋</div>
+    <div class="hdr-icon">📚</div>
     <div>
-      <h1>Xhipment — SOP Breakdown by Topic</h1>
+      <h1>Xhipment — SOP Directory</h1>
+      <div class="hdr-sub">All standard operating procedures in one place. Click "Open SOP" to read any document.</div>
     </div>
   </div>
-  <div class="hdr-sub">Every SOP broken into granular, actionable topics across the full shipment lifecycle. Use this as your master map to identify what's documented, what's in progress, and what still needs to be built.</div>
-  <div class="hdr-meta">
-    <div class="meta-badge"><span>10</span> Lifecycle Phases</div>
-    <div class="meta-badge"><span>45+</span> SOP Topics</div>
-    <div class="meta-badge"><span>Air &amp; Ocean</span> Coverage</div>
-    <div class="meta-badge">Last Updated: <span>Apr 2026</span></div>
+  <div class="hdr-stats">
+    <div class="stat-pill"><span id="totalCount">49</span> Total SOPs</div>
+    <div class="stat-pill"><span id="linkedCount">43</span> Linked to Google Docs</div>
+    <div class="stat-pill">Air &amp; Ocean | IN→US, UK→US</div>
+    <div class="stat-pill">Last updated: <span>Apr 2026</span></div>
   </div>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <span class="filter-label">Filter by Mode:</span>
-  <button class="filter-btn active" onclick="filterTopics('all', this)">All</button>
-  <button class="filter-btn" onclick="filterTopics('air', this)">✈️ Air</button>
-  <button class="filter-btn" onclick="filterTopics('ocean', this)">🚢 Ocean</button>
+<!-- SEARCH BAR -->
+<div class="search-bar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" placeholder="Search by SOP name, keyword, process… (e.g. 'pickup', 'customs', 'FedEx')" oninput="search()"/>
+  </div>
+  <span class="search-count" id="searchCount"></span>
+  <div class="filter-pills">
+    <button class="fp active" onclick="filterMode('all',this)">All</button>
+    <button class="fp" onclick="filterMode('air',this)">✈️ Air</button>
+    <button class="fp" onclick="filterMode('ocean',this)">🚢 Ocean</button>
+  </div>
 </div>
 
-<!-- CANVAS -->
 <div class="canvas">
+<div id="noResults" class="no-results"><h3>🔍 No SOPs found</h3><p>Try a different keyword or clear the search.</p></div>
 
-  <!-- LEGEND -->
-  <div class="legend">
-    <span class="legend-title">Mode Tags</span>
-    <div class="legend-items">
-      <div class="leg"><span class="tag tag-air">Air</span> Air freight</div>
-      <div class="leg"><span class="tag tag-ocean">Ocean</span> Ocean freight</div>
-      <div class="leg"><span class="tag tag-both">Both</span> Both modes</div>
-    </div>
-    <span class="legend-title" style="margin-left:12px">SOP Status</span>
-    <div class="legend-items">
-      <div class="leg"><span class="tag tag-done">✓ Done</span></div>
-      <div class="leg"><span class="tag tag-inprog">⏳ In Progress</span></div>
-      <div class="leg"><span class="tag tag-todo">◎ Needed</span></div>
-    </div>
+<!-- ─────────────────────────────────────────────
+     CATEGORY 1: END-TO-END & CORE SOPs
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="core">
+  <div class="cat-hdr">
+    <span class="cat-icon">📋</span>
+    <span class="cat-title">End-to-End &amp; Core SOPs</span>
+    <span class="cat-count">4 SOPs</span>
   </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean" style="border-left-color:#059669">
+      <td style="border-left:4px solid #059669;border-radius:10px 0 0 10px">
+        <div class="sop-name">Ocean IN2US End-to-End SOP v3</div>
+        <div class="sop-desc">Complete end-to-end process for ocean freight from India to US</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1EE_VzIn0JJp_RcOMgeFaq2HyKW8Xeouckvi68q_JeBY/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #059669;border-radius:10px 0 0 10px">
+        <div class="sop-name">Ocean IN2US End-to-End Process Flow</div>
+        <div class="sop-desc">Visual process flow diagram for Ocean IN2US operations</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/drawings/d/1Rieb-zJP3Z04Wh6XKKk57vpgwoaHJCX-OglhO3sYquY/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #059669;border-radius:10px 0 0 10px">
+        <div class="sop-name">Ocean Exports SOP v3</div>
+        <div class="sop-desc">Core SOP for ocean export operations</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1kNUTgr9jGY1iVIVMxf9AyoCSbNn93MXG-jEGE6SAorI/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air">
+      <td style="border-left:4px solid #0369a1;border-radius:10px 0 0 10px">
+        <div class="sop-name">Xhipment Air Export Ops Guide</div>
+        <div class="sop-desc">Comprehensive guide for air export operations end-to-end</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1m2UFNzlRhpjGm7_XQshgULElka8Gu3nyGvoVg9msEnk/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
 
-  <div class="controls">
-    <button class="ctrl-btn" onclick="expandAll()">Expand All ↓</button>
-    <button class="ctrl-btn" onclick="collapseAll()">Collapse All ↑</button>
+<!-- ─────────────────────────────────────────────
+     CATEGORY 2: DOCUMENT VERIFICATION
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="docverif">
+  <div class="cat-hdr">
+    <span class="cat-icon">📋</span>
+    <span class="cat-title">Document Verification &amp; Compliance</span>
+    <span class="cat-count">7 SOPs</span>
   </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">Export Document Collection / Verification SOP v3</div>
+        <div class="sop-desc">How to collect and verify shipper documents for ocean export (new &amp; existing customers)</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1KffH2KmtHxba_0LVpFfssRf_bEbiogR972wOFSqvNF8/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">Export Document Collection / Verification SOP (Ocean v2)</div>
+        <div class="sop-desc">Alternate version of export document collection guide for ocean</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Z-tT7FJ4CHusQjgij9htRJFy2D9fTDNKmswwF8uZF10/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">Document Verification Checklist</div>
+        <div class="sop-desc">Checklist for verifying required documents for all shipper types (first-time / existing)</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/spreadsheets/d/1TurYfLxnacIttIlUP3YfMMN-kawd-Xvx2uGZB8_Zuxk/edit?gid=801819568" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">New Customer Document Verification SOP (Air)</div>
+        <div class="sop-desc">Step-by-step document verification process for new air freight customers</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Z0YsCOEZnfvW16GkjG2-wEKlvDgzeZnKa3mKY_JH4rs/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">AD Code &amp; IFSC Registration Guide (Air)</div>
+        <div class="sop-desc">How to register AD Code and IFSC with customs — step-by-step for air</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1ENmnyMyzwdyBn8kMnYNKUS2zHCI270P6jVPN-7oozac/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">AD Code &amp; IFSC Registration Guide (Ocean)</div>
+        <div class="sop-desc">How to register AD Code and IFSC with customs — step-by-step for ocean</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1UrfgkzXRuSijxh4tlnrJVv7hrX-ROCzBQ4_XxWReOf4/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #7c3aed;border-radius:10px 0 0 10px">
+        <div class="sop-name">Document Verification — Exception Handling Guide (Ocean)</div>
+        <div class="sop-desc">FAQ-format guide for resolving common document verification issues and exceptions</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1KJhWqMGzeka7gNbMbviAVKIDBqbHDQnixOoT9nUKfHU/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 3: PICKUP OPERATIONS
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="pickup">
+  <div class="cat-hdr">
+    <span class="cat-icon">🚛</span>
+    <span class="cat-title">Pickup Operations</span>
+    <span class="cat-count">2 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #059669;border-radius:10px 0 0 10px">
+        <div class="sop-name">Ocean Pickup Operations SOP</div>
+        <div class="sop-desc">Checklist and milestones for coordinating cargo pickup from shipper to origin port/CFS</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/11dTWVFY3pOiVRj6zdkDTFp6xQBxvNihy4BODu8d5uYs/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #059669;border-radius:10px 0 0 10px">
+        <div class="sop-name">Ocean Origin Detention Policy</div>
+        <div class="sop-desc">Policy for managing detention charges at origin port</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/16WSweBVY-xqW1po1eiqhfOCV8fbeIjNoNXnG1Bowo-s/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 4: EXPORT / ORIGIN OPERATIONS
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="export">
+  <div class="cat-hdr">
+    <span class="cat-icon">📤</span>
+    <span class="cat-title">Export &amp; Origin Operations</span>
+    <span class="cat-count">6 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #0d9488;border-radius:10px 0 0 10px">
+        <div class="sop-name">Container Booking SOP</div>
+        <div class="sop-desc">Process for booking ocean container space and confirming with carriers</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Rz7OeeekLbVlEg3igkO9qpT4lZOf8Qrs_cMXk-8UB3E/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #0d9488;border-radius:10px 0 0 10px">
+        <div class="sop-name">Shipping Instructions Guide</div>
+        <div class="sop-desc">How to file Shipping Instructions across multiple ocean carriers (Maersk, MSC, OOCL, etc.)</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Uo-ckUa9WW-w-MhJZG13N5sQBVSAjbrKRtAYsyRdJ5o/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #0d9488;border-radius:10px 0 0 10px">
+        <div class="sop-name">Marking and Labeling Guide</div>
+        <div class="sop-desc">Correct marking and labeling standards for shipment packages</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1PGjFSeuyZLhtqEsmyNIVW8w-57eWTt7fQqxPHFtU3ls/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air">
+      <td style="border-left:4px solid #0d9488;border-radius:10px 0 0 10px">
+        <div class="sop-name">FedEx Shipping Label Creation SOP</div>
+        <div class="sop-desc">End-to-end guide for generating FedEx shipping labels for air export</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1M7k5wx_6UVcR4YrI0koHfokausRZB5doy7AEhfZOygA/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air">
+      <td style="border-left:4px solid #0d9488;border-radius:10px 0 0 10px">
+        <div class="sop-name">UK–US Air Ops SOP</div>
+        <div class="sop-desc">Operations process for UK-to-US air freight shipments</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1lTXvjUpVs2uJ9z9dIh8L_z0mAM5XckDO-O6RtmLPy0o/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #0d9488;border-radius:10px 0 0 10px">
+        <div class="sop-name">Checklist Verification Guide</div>
+        <div class="sop-desc">Pre-departure checklist verification for all shipment types</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Whh_VQo7VODvFeI4KSxjiZ7Oxu5vR5wsCV5CYpFoL70/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 5: EXCEPTION MANAGEMENT
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="exception">
+  <div class="cat-hdr">
+    <span class="cat-icon">⚠️</span>
+    <span class="cat-title">Exception Management &amp; Troubleshooting</span>
+    <span class="cat-count">2 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #dc2626;border-radius:10px 0 0 10px">
+        <div class="sop-name">Exception Management &amp; Troubleshooting Guide v3</div>
+        <div class="sop-desc">Playbook for resolving in-transit exceptions — delays, rollovers, cargo damage, holds</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/spreadsheets/d/1vap14g--BXYDr8GCX7U3WeJ1j4FLjSfm0qJJff7k6Do/edit?gid=1298631930" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #dc2626;border-radius:10px 0 0 10px">
+        <div class="sop-name">Container ETA Changes SOP</div>
+        <div class="sop-desc">How to handle and communicate container ETA changes to customers and operations</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1K2u1l82zLlWQm5MHNLTuu-ymFuYmay10Ogmacov_j_k/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 6: FREIGHT RELEASE & B/L
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="bl">
+  <div class="cat-hdr">
+    <span class="cat-icon">🗂️</span>
+    <span class="cat-title">Freight Release &amp; Bill of Lading (B/L)</span>
+    <span class="cat-count">7 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">SWB Release &amp; Freight Release SOP</div>
+        <div class="sop-desc">Process for Sea Waybill and freight release coordination</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1FnRIx8zq8iguf18MeZCQKl-Oc9bYTTpa5ZK2YaP_e4s/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">SWB &amp; Freight Release — Roles &amp; Responsibilities</div>
+        <div class="sop-desc">RACI matrix for SWB and freight release responsibilities</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/spreadsheets/d/1kym8VIlovODnOrTN2nGH7fqzl4emZ42wROZa3rdMfIg/edit?gid=0" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">OOCL B/L &amp; Freight Release Process</div>
+        <div class="sop-desc">Carrier-specific B/L and freight release process for OOCL</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1etbewPjHUQ4nVLJ373y78eFkagWsZOp7S_SCwTDb-GY/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">CMA CGM B/L / Freight Release</div>
+        <div class="sop-desc">Carrier-specific B/L and freight release process for CMA CGM</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/13ElNGZpbJP1DGRWGJFTO6IPfPk4mT2WDGCX7boRMBvw/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">CP World B/L / Freight Release Process</div>
+        <div class="sop-desc">Carrier-specific B/L and freight release process for CP World</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1oNaTQ0Z_2j-l1i7wB8pyx8ncYpmu-aRNUBHYXi91CAs/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">Noble Shipping B/L / Freight Release Process</div>
+        <div class="sop-desc">Carrier-specific B/L and freight release process for Noble Shipping</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/103h_RwU8RCYnVON8I2RcNtZA8ntyJc1A1tajXfGCUE0/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">Customs &amp; Freight Release Check Guide</div>
+        <div class="sop-desc">Final check guide for customs clearance and freight release status</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/196O5gMccujpuJkOGzP5ROKTHH62XYs9JEf2muZfC1-A/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 7: IMPORT / DESTINATION OPERATIONS
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="import">
+  <div class="cat-hdr">
+    <span class="cat-icon">🏢</span>
+    <span class="cat-title">Import &amp; Destination Operations (US)</span>
+    <span class="cat-count">8 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">Import Clearance SOP</div>
+        <div class="sop-desc">US import customs clearance process — entry filing, exam handling, duty payment</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/15Vf-BNRbCI7neePkn2D0AdxEyfGs51Uivr3v20NU4yI/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">Ocean Import Clearance SOP</div>
+        <div class="sop-desc">Ocean-specific import clearance SOP including ISF and AMS filing</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1cna3GgFAyVuXZlc9abOMkpIlpb3qX2n7lLswCE_aAew/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">Drayage SOPs</div>
+        <div class="sop-desc">Process for arranging and managing drayage from US port to warehouse/FBA</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1A43n5pJTTXx3l7YeTq2Aem9egKXHZwV-xvV_3nCK-5U/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">SOP: Transloading</div>
+        <div class="sop-desc">Process for transloading operations at US destination</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1G3tkMnNwaQqvTVJsjR3oLZhJXYvLPg7MY3hagAtTawU/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">Transloading — Issues &amp; Exceptions</div>
+        <div class="sop-desc">Handling exceptions and issues during transloading operations</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/15GYcUWdKJ532efI41_-RbcIIQX9803Nca4MmU9KDeq4/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">FC Redirection Guide</div>
+        <div class="sop-desc">How to handle Amazon FC redirection requests at destination</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1SHa1nRsa_n707r8OwqwsYK7LEatw-IBoep1Eomv3LrM/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">Amazon Freight Booking Guidelines</div>
+        <div class="sop-desc">Guidelines for booking Amazon freight and FBA delivery appointments</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1TFioYB4c0kAHbvgq20e1ONwyt-GUu32yCYLpMukkABA/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #1d4ed8;border-radius:10px 0 0 10px">
+        <div class="sop-name">Amazon Carrier Central — Low Volume Appointment Creation</div>
+        <div class="sop-desc">Step-by-step for creating low volume delivery appointments via Amazon Carrier Central</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1twC_spJR0RyTBHoVgt7TA1a5jO_iSUtB0M8bH3IWpqM/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 8: PROCUREMENT
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="procurement">
+  <div class="cat-hdr">
+    <span class="cat-icon">🛒</span>
+    <span class="cat-title">Procurement &amp; Pricing</span>
+    <span class="cat-count">4 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="air">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">FedEx IN2US Quoting Tool SOP</div>
+        <div class="sop-desc">How to use the FedEx quoting tool to generate accurate air freight rates for India-to-US</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-proc">Procurement</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1NkHHNXhGqaHj1VFj9tRts0BropVbVMHQ86upuy51J9k/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">Disaggregated Calculator — IN2US Air SOP</div>
+        <div class="sop-desc">Using the disaggregated pricing model for air shipments — margin calculation guide</div>
+      </td>
+      <td><span class="tag tag-air">Air</span><span class="tag tag-proc">Procurement</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/17-flLH8GT91uuWOYR6MVkzz0fhmPd72jxJ71MRZLEKk/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">Cargo Insurance Procurement Guide</div>
+        <div class="sop-desc">How to procure cargo insurance — options, pricing, and claims process</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-proc">Procurement</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Io2fIJpiq3zQh9xRgfLcQA9TFi12XwGyd-OfMTD1KC4/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #d97706;border-radius:10px 0 0 10px">
+        <div class="sop-name">XPO Booking Process</div>
+        <div class="sop-desc">Process for booking shipments via XPO logistics at destination</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1Uc5DlCP5-293PvQjhWstbGiYSh87Q2msEDaIuzbPRtQ/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 9: WALMART & OTHER DELIVERY
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="delivery">
+  <div class="cat-hdr">
+    <span class="cat-icon">🚚</span>
+    <span class="cat-title">Last-Mile Delivery &amp; Retailer Appointments</span>
+    <span class="cat-count">3 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #7c2d12;border-radius:10px 0 0 10px">
+        <div class="sop-name">Walmart Appointment Guide</div>
+        <div class="sop-desc">Process for scheduling delivery appointments to Walmart distribution centres</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1DZ7GbKTPWqbSFZN6k8bVi2VFGvUjBmdBcRbtXZh6_BY/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="ocean">
+      <td style="border-left:4px solid #7c2d12;border-radius:10px 0 0 10px">
+        <div class="sop-name">OpenDocks Systems SOP</div>
+        <div class="sop-desc">How to use the OpenDocks platform for scheduling dock appointments</div>
+      </td>
+      <td><span class="tag tag-ocean">Ocean</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1O0aDKmbAI7vRlYpui4Wc7z1H7HwlFiSnnXf9FXtI9ow/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #7c2d12;border-radius:10px 0 0 10px">
+        <div class="sop-name">ICT Mail Blurb Template</div>
+        <div class="sop-desc">Standard email template for ICT delivery communications</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/1-MUKFnn70-Z0eUsF8XxlbaxNUrsHa1Lc3HLfjijFLZA/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     CATEGORY 10: SOP MANAGEMENT & PROCESSES
+───────────────────────────────────────────── -->
+<div class="cat-section" data-cat="mgmt">
+  <div class="cat-hdr">
+    <span class="cat-icon">⚙️</span>
+    <span class="cat-title">SOP Management &amp; Admin Processes</span>
+    <span class="cat-count">3 SOPs</span>
+  </div>
+  <table class="sop-table">
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #64748b;border-radius:10px 0 0 10px">
+        <div class="sop-name">Xhipment SOP Creation Guide</div>
+        <div class="sop-desc">Template and guide for creating new SOPs — naming conventions, mandatory fields, format</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><a href="https://docs.google.com/document/d/10s2G0GNkfpvl2ukD-oIAWDq45nCL0hrxYjixwosxKgw/edit" target="_blank" class="open-btn has-link">📄 Open SOP →</a></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #64748b;border-radius:10px 0 0 10px">
+        <div class="sop-name">SOP Amendment &amp; Communication Process</div>
+        <div class="sop-desc">How to request, review, approve, version, and communicate SOP changes</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><span class="open-btn no-link">📎 Link pending</span></td>
+    </tr>
+    <tr class="sop-row" data-modes="air ocean">
+      <td style="border-left:4px solid #64748b;border-radius:10px 0 0 10px">
+        <div class="sop-name">SOP Nomenclature &amp; Versioning Guide</div>
+        <div class="sop-desc">Naming conventions, version numbering rules, and archiving process for all SOPs</div>
+      </td>
+      <td><span class="tag tag-both">Both</span><span class="tag tag-done">✓ Done</span></td>
+      <td style="text-align:right"><span class="open-btn no-link">📎 Link pending</span></td>
+    </tr>
+  </table>
+</div>
 
-  <div class="phase-grid">
-
-    <!-- PHASE 1: Sales & Quoting -->
-    <div class="phase open" data-phase="1">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#2563eb">1</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Sales &amp; Quoting</div>
-          <div class="phase-desc">Customer acquisition, rate quoting, and commercial negotiations</div>
-        </div>
-        <span class="phase-count" style="background:#dbeafe;color:#1d4ed8">5 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">💬</span>
-              <span class="topic-name">Customer Onboarding Process</span>
-            </div>
-            <div class="topic-desc">Step-by-step guide for onboarding a new shipper — account setup, KYC collection, and platform access.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-sales">Sales</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">New vs. repeat shipper identification</div>
-              <div class="subtopic-item">KYC &amp; compliance document collection</div>
-              <div class="subtopic-item">XAP account creation &amp; access setup</div>
-              <div class="subtopic-item">Intro call checklist for CS/Sales rep</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air">
-            <div class="topic-top">
-              <span class="topic-icon">🧮</span>
-              <span class="topic-name">FedEx Pricing Tool — Air IN2US</span>
-            </div>
-            <div class="topic-desc">How to use the FedEx quoting tool to generate accurate air freight rates for India-to-US shipments.</div>
-            <div class="topic-tags">
-              <span class="tag tag-air">Air</span>
-              <span class="tag tag-procurement">Procurement</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Logging into FedEx quoting portal</div>
-              <div class="subtopic-item">Inputting shipment parameters (weight, dims, origin-dest)</div>
-              <div class="subtopic-item">Selecting service level &amp; transit time</div>
-              <div class="subtopic-item">Applying surcharges &amp; accessorials</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air">
-            <div class="topic-top">
-              <span class="topic-icon">📊</span>
-              <span class="topic-name">Disaggregated Calculator — Air IN2US</span>
-            </div>
-            <div class="topic-desc">Using the disaggregated pricing model for air shipments to ensure accurate margin calculation.</div>
-            <div class="topic-tags">
-              <span class="tag tag-air">Air</span>
-              <span class="tag tag-procurement">Procurement</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">When to use disaggregated vs. ICL pricing</div>
-              <div class="subtopic-item">Inputting lane-specific cost components</div>
-              <div class="subtopic-item">Margin review &amp; approval threshold</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🔄</span>
-              <span class="topic-name">Cross-Selling &amp; Account Management</span>
-            </div>
-            <div class="topic-desc">Playbook for upselling additional services (air → ocean, exports → imports) to existing customers.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-sales">Sales</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Trigger events for cross-sell opportunities</div>
-              <div class="subtopic-item">Account health scoring &amp; review cadence</div>
-              <div class="subtopic-item">Escalation path for payment disputes</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">💳</span>
-              <span class="topic-name">Payment &amp; Collections</span>
-            </div>
-            <div class="topic-desc">Process for invoicing, following up on outstanding payments, and managing collections.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-sales">Sales</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Invoice generation &amp; dispatch timing</div>
-              <div class="subtopic-item">Payment follow-up cadence (T+7, T+14, T+30)</div>
-              <div class="subtopic-item">Escalation to finance &amp; legal</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 2: Procurement -->
-    <div class="phase open" data-phase="2">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#d97706">2</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Procurement &amp; Vendor Management</div>
-          <div class="phase-desc">Rate sourcing, vendor coordination, and internal procurement workflows</div>
-        </div>
-        <span class="phase-count" style="background:#fef3c7;color:#92400e">4 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">⏱️</span>
-              <span class="topic-name">Quote TAT Tracking &amp; Daily Flash</span>
-            </div>
-            <div class="topic-desc">Monitoring turnaround times for procurement quote requests to prevent delayed shipper responses.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-procurement">Procurement</span>
-              <span class="tag tag-inprog">⏳ In Progress</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Setting up Daily Flash report</div>
-              <div class="subtopic-item">TAT benchmarks by lane &amp; mode</div>
-              <div class="subtopic-item">Escalation if TAT breached</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🚛</span>
-              <span class="topic-name">Pickup Quote → Operations Handoff</span>
-            </div>
-            <div class="topic-desc">Structured process for passing pickup vendor details from Procurement to the Operations team for execution.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-procurement">Procurement</span>
-              <span class="tag tag-todo">◎ Needed</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">POC details from vendor quote</div>
-              <div class="subtopic-item">Screenshot / quote document attachment</div>
-              <div class="subtopic-item">Communication channel &amp; format (e.g. Slack template)</div>
-              <div class="subtopic-item">Ops confirmation receipt</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air">
-            <div class="topic-top">
-              <span class="topic-icon">💰</span>
-              <span class="topic-name">ICL Payments SOP</span>
-            </div>
-            <div class="topic-desc">Managing payments to ICL (International Carrier/Logistics partner) for air freight settlements.</div>
-            <div class="topic-tags">
-              <span class="tag tag-air">Air</span>
-              <span class="tag tag-procurement">Procurement</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Invoice verification &amp; matching</div>
-              <div class="subtopic-item">Approval workflow &amp; payment release</div>
-              <div class="subtopic-item">Reconciliation &amp; record keeping</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air">
-            <div class="topic-top">
-              <span class="topic-icon">📦</span>
-              <span class="topic-name">Octoloop Shipment Booking</span>
-            </div>
-            <div class="topic-desc">Process for booking air shipments through the Octoloop platform.</div>
-            <div class="topic-tags">
-              <span class="tag tag-air">Air</span>
-              <span class="tag tag-procurement">Procurement</span>
-              <span class="tag tag-inprog">⏳ On Hold</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">When to use Octoloop vs. direct booking</div>
-              <div class="subtopic-item">Booking flow &amp; confirmation steps</div>
-              <div class="subtopic-item">Cancellation &amp; amendment process</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 3: Document Verification -->
-    <div class="phase open" data-phase="3">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#7c3aed">3</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Document Verification &amp; Compliance</div>
-          <div class="phase-desc">Validating shipper documents, registrations, and regulatory compliance</div>
-        </div>
-        <span class="phase-count" style="background:#ede9fe;color:#6d28d9">6 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🆕</span>
-              <span class="topic-name">New Customer — First Shipment Doc Verification</span>
-            </div>
-            <div class="topic-desc">Complete checklist for verifying documents when a shipper is new to freight forwarding or new to Xhipment.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">First-time shipper (new to FF) document set</div>
-              <div class="subtopic-item">First-time with Xhipment (existing FF) document set</div>
-              <div class="subtopic-item">Existing Xhipment customer — repeat shipment checklist</div>
-              <div class="subtopic-item">Missing document escalation path</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🏦</span>
-              <span class="topic-name">AD Code &amp; IFSC Registration Guide</span>
-            </div>
-            <div class="topic-desc">Step-by-step guide for obtaining and registering the shipper's AD Code and IFSC with customs authorities.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">What is AD Code &amp; why it's needed</div>
-              <div class="subtopic-item">Bank letter format &amp; submission process</div>
-              <div class="subtopic-item">IFSC registration at Customs</div>
-              <div class="subtopic-item">Common errors &amp; corrections</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📦</span>
-              <span class="topic-name">Cargo-Specific Document Requirements</span>
-            </div>
-            <div class="topic-desc">Reference guide for additional documents required for specific cargo types (hazmat, perishables, pharma, etc.).</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Hazardous goods (DG declaration, MSDS)</div>
-              <div class="subtopic-item">Pharmaceutical / temperature-controlled</div>
-              <div class="subtopic-item">Textile &amp; garments (L/C documents)</div>
-              <div class="subtopic-item">Electronics (ECCN classification)</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">❓</span>
-              <span class="topic-name">Document Verification — FAQ &amp; Exception Handling</span>
-            </div>
-            <div class="topic-desc">Common issues encountered during document verification and their standard resolutions.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Mismatch in shipper name vs. IEC</div>
-              <div class="subtopic-item">Expired/invalid IE Code scenarios</div>
-              <div class="subtopic-item">Partial / incorrect commercial invoice</div>
-              <div class="subtopic-item">Delay in document receipt — SLA breach protocol</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🗂️</span>
-              <span class="topic-name">Shipment Assignment Logic &amp; Exception Management</span>
-            </div>
-            <div class="topic-desc">Rules for assigning shipments to operations specialists and handling routing exceptions.</div>
-            <div class="topic-tags">
-              <span class="tag tag-ocean">Ocean</span>
-              <span class="tag tag-inprog">⏳ On Hold</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Assignment criteria (volume, lane, complexity)</div>
-              <div class="subtopic-item">Exception triggers &amp; escalation</div>
-              <div class="subtopic-item">Re-assignment rules &amp; capacity balancing</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🎓</span>
-              <span class="topic-name">Doc Verification Training for New Joiners</span>
-            </div>
-            <div class="topic-desc">Structured onboarding training module for new Operations Specialists covering document review fundamentals.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Week 1: Document types &amp; formats</div>
-              <div class="subtopic-item">Week 2: Verification checklist walkthrough</div>
-              <div class="subtopic-item">Supervised practice with sample shipments</div>
-              <div class="subtopic-item">Certification quiz / sign-off</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 4: Pickup Operations -->
-    <div class="phase open" data-phase="4">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#059669">4</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Pickup Operations</div>
-          <div class="phase-desc">Coordinating cargo pickup from shipper premises to origin port/airport</div>
-        </div>
-        <span class="phase-count" style="background:#d1fae5;color:#065f46">4 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">✅</span>
-              <span class="topic-name">Pickup Execution Checklist</span>
-            </div>
-            <div class="topic-desc">Step-by-step checklist for operations team to execute a pickup — from vendor confirmation to cargo handover.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-inprog">⏳ In Progress</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Pickup order confirmation with vendor</div>
-              <div class="subtopic-item">Sharing cargo &amp; address details</div>
-              <div class="subtopic-item">Vehicle &amp; driver tracking</div>
-              <div class="subtopic-item">Cargo receipt &amp; condition check at pickup</div>
-              <div class="subtopic-item">POD / GRN collection</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📍</span>
-              <span class="topic-name">Pickup Operations Milestones &amp; TAT Tracking</span>
-            </div>
-            <div class="topic-desc">Defining and monitoring critical milestones in the pickup process to ensure TAT compliance.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-inprog">⏳ In Progress</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">M1: Pickup request raised</div>
-              <div class="subtopic-item">M2: Vendor confirmed</div>
-              <div class="subtopic-item">M3: Vehicle dispatched</div>
-              <div class="subtopic-item">M4: Cargo picked up &amp; in transit</div>
-              <div class="subtopic-item">M5: Cargo delivered to warehouse/port</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🏭</span>
-              <span class="topic-name">Warehouse-to-Port / CFS Coordination</span>
-            </div>
-            <div class="topic-desc">Managing the cargo movement from pickup warehouse to the Container Freight Station or Airport Cargo Terminal.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">CFS booking &amp; slot allocation</div>
-              <div class="subtopic-item">Document submission at CFS/Air terminal</div>
-              <div class="subtopic-item">Stuffing supervision (for ocean LCL/FCL)</div>
-              <div class="subtopic-item">Weight &amp; dimension verification at CFS</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🚨</span>
-              <span class="topic-name">Pickup Exception Handling</span>
-            </div>
-            <div class="topic-desc">Standard playbook for handling pickup delays, vendor no-shows, cargo damage, and other exceptions.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Vendor no-show protocol</div>
-              <div class="subtopic-item">Cargo not ready at shipper's end</div>
-              <div class="subtopic-item">Weight/dim discrepancy at pickup</div>
-              <div class="subtopic-item">Communicating delay to shipper</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 5: Consol Creation -->
-    <div class="phase open" data-phase="5">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#db2777">5</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Consolidation &amp; Load Planning</div>
-          <div class="phase-desc">Creating LCL consols, FCL bookings, and tracking gross margins</div>
-        </div>
-        <span class="phase-count" style="background:#fce7f3;color:#9d174d">3 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🗃️</span>
-              <span class="topic-name">Consol Creation &amp; Quote ID Mapping</span>
-            </div>
-            <div class="topic-desc">Building LCL consolidations in XAP with correct Quote ID linkage to enable margin visibility for sales.</div>
-            <div class="topic-tags">
-              <span class="tag tag-ocean">Ocean</span>
-              <span class="tag tag-todo">◎ Needed</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Selecting shipments for consolidation</div>
-              <div class="subtopic-item">Adding Quote IDs to consol in XAP</div>
-              <div class="subtopic-item">Confirming gross margin pre-sailing</div>
-              <div class="subtopic-item">Consol finalization &amp; vessel nomination</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air">
-            <div class="topic-top">
-              <span class="topic-icon">✈️</span>
-              <span class="topic-name">Air Consol &amp; ULD Build-up</span>
-            </div>
-            <div class="topic-desc">Creating air consolidations and ULD plans for ICL or disaggregated air shipments.</div>
-            <div class="topic-tags">
-              <span class="tag tag-air">Air</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">ULD allocation &amp; weight distribution</div>
-              <div class="subtopic-item">Hawb-to-MAWB mapping</div>
-              <div class="subtopic-item">Pre-alert to destination agent</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📈</span>
-              <span class="topic-name">Gross Margin Tracking per Consol/Shipment</span>
-            </div>
-            <div class="topic-desc">Process for operations and finance to track and validate booked vs. actual gross margins per sailing/flight.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Revenue vs. cost component mapping</div>
-              <div class="subtopic-item">Margin variance analysis triggers</div>
-              <div class="subtopic-item">Weekly GM review cadence</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 6: Export / Origin Operations -->
-    <div class="phase open" data-phase="6">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#0d9488">6</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Export &amp; Origin Operations</div>
-          <div class="phase-desc">Shipping instructions, liner coordination, export documentation, and cargo departure</div>
-        </div>
-        <span class="phase-count" style="background:#ccfbf1;color:#0f766e">6 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📝</span>
-              <span class="topic-name">Shipping Instruction (SI) Filing — Ocean Liners</span>
-            </div>
-            <div class="topic-desc">How to correctly fill and submit Shipping Instructions across different ocean carriers.</div>
-            <div class="topic-tags">
-              <span class="tag tag-ocean">Ocean</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Maersk, MSC, Hapag-Lloyd SI portals</div>
-              <div class="subtopic-item">SI cut-off deadlines per liner</div>
-              <div class="subtopic-item">Dangerous goods / special cargo SI requirements</div>
-              <div class="subtopic-item">B/L draft review &amp; approval</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air">
-            <div class="topic-top">
-              <span class="topic-icon">🏷️</span>
-              <span class="topic-name">FedEx Shipping Label Creation</span>
-            </div>
-            <div class="topic-desc">End-to-end guide for generating FedEx shipping labels for air export shipments via XAP or FedEx portal.</div>
-            <div class="topic-tags">
-              <span class="tag tag-air">Air</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Accessing FedEx Ship Manager / XAP</div>
-              <div class="subtopic-item">Entering shipper/consignee details</div>
-              <div class="subtopic-item">Package details &amp; commodity declaration</div>
-              <div class="subtopic-item">Printing &amp; affixing labels</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📋</span>
-              <span class="topic-name">Commercial Invoice &amp; Packing List Preparation</span>
-            </div>
-            <div class="topic-desc">Guide for reviewing, correcting, and completing the commercial invoice and packing list for export compliance.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Mandatory fields &amp; format requirements</div>
-              <div class="subtopic-item">HS Code validation</div>
-              <div class="subtopic-item">Value declaration for customs</div>
-              <div class="subtopic-item">Common errors &amp; corrections</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🖥️</span>
-              <span class="topic-name">XAP Platform — Shipment Execution Guide</span>
-            </div>
-            <div class="topic-desc">How to use the XAP internal platform to manage shipment modules from booking to departure.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Shipment creation &amp; module navigation</div>
-              <div class="subtopic-item">Document upload &amp; status updates</div>
-              <div class="subtopic-item">Milestone tracking in XAP</div>
-              <div class="subtopic-item">Test account for new joiner practice</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🛳️</span>
-              <span class="topic-name">Vessel Booking &amp; Space Confirmation</span>
-            </div>
-            <div class="topic-desc">Process for booking vessel space with carriers and confirming cargo on nominated vessels.</div>
-            <div class="topic-tags">
-              <span class="tag tag-ocean">Ocean</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Space request &amp; booking confirmation flow</div>
-              <div class="subtopic-item">VGM (Verified Gross Mass) submission</div>
-              <div class="subtopic-item">Cut-off time management</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🔍</span>
-              <span class="topic-name">Pre-Shipment Export Compliance Check</span>
-            </div>
-            <div class="topic-desc">Final compliance review before cargo is shipped — dual-use goods, sanctions screening, export restrictions.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-              <span class="tag tag-p1">P1</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Sanctioned entity screening</div>
-              <div class="subtopic-item">Restricted commodity check</div>
-              <div class="subtopic-item">Export license requirement assessment</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 7: Customs -->
-    <div class="phase open" data-phase="7">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#dc2626">7</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Customs Clearance (Export &amp; Import)</div>
-          <div class="phase-desc">Filing, duty assessment, and clearing cargo with customs at origin and destination</div>
-        </div>
-        <span class="phase-count" style="background:#fee2e2;color:#991b1b">4 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🇮🇳</span>
-              <span class="topic-name">Export Customs Filing — India (ICES)</span>
-            </div>
-            <div class="topic-desc">Filing export shipping bills in the ICES (Indian Customs EDI System) for clearance at Indian ports/airports.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-inprog">⏳ In Progress</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Shipping Bill type selection (Free, Drawback, MEIS)</div>
-              <div class="subtopic-item">ICES data entry &amp; document submission</div>
-              <div class="subtopic-item">LEO (Let Export Order) tracking</div>
-              <div class="subtopic-item">Drawback &amp; IGST refund filing</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🇺🇸</span>
-              <span class="topic-name">US Import Entry &amp; Customs Clearance</span>
-            </div>
-            <div class="topic-desc">AMS/ISF filing, CBP entry preparation, and customs clearance coordination with US broker.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">ISF 10+2 filing (Ocean) / AMS filing (Air)</div>
-              <div class="subtopic-item">Formal vs. informal entry thresholds</div>
-              <div class="subtopic-item">CBP exam types &amp; response protocol</div>
-              <div class="subtopic-item">Duty payment &amp; release confirmation</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📊</span>
-              <span class="topic-name">US Customs Duty Assessment</span>
-            </div>
-            <div class="topic-desc">How to find and apply the correct US customs duty rate for different commodity categories.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Using HTSUS classification tool</div>
-              <div class="subtopic-item">Section 301 China tariffs applicability</div>
-              <div class="subtopic-item">First Sale &amp; GSP duty optimization</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📄</span>
-              <span class="topic-name">Master Commercial Invoice for Destination Clearance</span>
-            </div>
-            <div class="topic-desc">Creating the master commercial invoice used by the US customs broker for clearance and duty assessment.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Consolidating line items from shipper invoice</div>
-              <div class="subtopic-item">Country of origin declaration</div>
-              <div class="subtopic-item">Incoterms &amp; freight value inclusion</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 8: Transit -->
-    <div class="phase open" data-phase="8">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#64748b">8</div>
-        <div class="phase-title-block">
-          <div class="phase-name">In-Transit Monitoring &amp; Exception Management</div>
-          <div class="phase-desc">Shipment tracking, carrier updates, and exception resolution during transit</div>
-        </div>
-        <span class="phase-count" style="background:#f1f5f9;color:#475569">3 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📡</span>
-              <span class="topic-name">Shipment Tracking &amp; Milestone Updates</span>
-            </div>
-            <div class="topic-desc">Process for proactively tracking shipment status and updating customers and internal teams with milestone events.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Gate-in confirmation at port/airport</div>
-              <div class="subtopic-item">Vessel/flight departure alert</div>
-              <div class="subtopic-item">Transshipment tracking (if applicable)</div>
-              <div class="subtopic-item">ETA updates to shipper/consignee</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">⚠️</span>
-              <span class="topic-name">Exception Management &amp; Troubleshooting Guide</span>
-            </div>
-            <div class="topic-desc">Comprehensive playbook for handling in-transit exceptions — delays, rollovers, cargo damage, and customs holds.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Vessel rollover / flight cancellation response</div>
-              <div class="subtopic-item">Cargo damage claim initiation</div>
-              <div class="subtopic-item">Customs hold / exam protocol</div>
-              <div class="subtopic-item">Customer communication templates</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📬</span>
-              <span class="topic-name">Pre-Arrival Notification (PAN) to Destination</span>
-            </div>
-            <div class="topic-desc">Sending pre-arrival alerts and document packages to the destination agent or consignee before vessel/flight arrival.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Pre-alert package contents (B/L copy, CI, PL)</div>
-              <div class="subtopic-item">Timing: when to send pre-alert</div>
-              <div class="subtopic-item">Destination agent &amp; consignee communication</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 9: Destination / Delivery -->
-    <div class="phase open" data-phase="9">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#1d4ed8">9</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Destination Operations &amp; Last-Mile Delivery</div>
-          <div class="phase-desc">Cargo receipt, deconsolidation, delivery coordination, and POD collection</div>
-        </div>
-        <span class="phase-count" style="background:#e0f2fe;color:#0369a1">3 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🏢</span>
-              <span class="topic-name">Cargo Arrival &amp; Deconsolidation</span>
-            </div>
-            <div class="topic-desc">Process from cargo arrival at destination port/airport through deconsolidation at US warehouse/CFS.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Arrival notice from carrier / port</div>
-              <div class="subtopic-item">Coordinating with destination CFS/warehouse</div>
-              <div class="subtopic-item">Devan inspection &amp; discrepancy reporting</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🚚</span>
-              <span class="topic-name">Last-Mile Delivery &amp; Amazon FBA Compliance</span>
-            </div>
-            <div class="topic-desc">Coordinating domestic US delivery, including FBA-compliant shipments to Amazon fulfillment centers.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Amazon FBA labeling &amp; appointment booking</div>
-              <div class="subtopic-item">Standard delivery coordination</div>
-              <div class="subtopic-item">Delivery exception &amp; re-delivery protocol</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">✔️</span>
-              <span class="topic-name">POD Collection &amp; Shipment Closure</span>
-            </div>
-            <div class="topic-desc">Process for collecting Proof of Delivery and formally closing out a shipment in XAP.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-todo">◎ Needed</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">POD receipt from delivery agent</div>
-              <div class="subtopic-item">Uploading POD to XAP &amp; Zoho</div>
-              <div class="subtopic-item">Triggering final invoice to customer</div>
-              <div class="subtopic-item">Shipment closure &amp; archiving</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- PHASE 10: Customer Service -->
-    <div class="phase open" data-phase="10">
-      <div class="phase-hdr" onclick="togglePhase(this)">
-        <div class="phase-num" style="background:#7c2d12">10</div>
-        <div class="phase-title-block">
-          <div class="phase-name">Customer Service &amp; Ticket Management (CTT)</div>
-          <div class="phase-desc">Handling inbound customer queries, issues, and tickets via Zoho Desk throughout the lifecycle</div>
-        </div>
-        <span class="phase-count" style="background:#ffedd5;color:#7c2d12">4 Topics</span>
-        <span class="phase-arrow">▼</span>
-      </div>
-      <div class="phase-body">
-        <div class="topics-grid">
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🎫</span>
-              <span class="topic-name">Zoho Desk — Ticket Handling SOP</span>
-            </div>
-            <div class="topic-desc">Standard process for CTT reps to handle inbound customer tickets in Zoho Desk, by channel, mode, and lane.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-cs">Customer Service</span>
-              <span class="tag tag-inprog">⏳ In Progress</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Ticket opening &amp; categorization by channel</div>
-              <div class="subtopic-item">Tagging by mode (Air/Ocean) &amp; trade lane</div>
-              <div class="subtopic-item">First response SLA targets</div>
-              <div class="subtopic-item">Escalation path &amp; owner assignment</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📥</span>
-              <span class="topic-name">Inbound Ticket Handling &amp; Triage</span>
-            </div>
-            <div class="topic-desc">How CTT triages incoming tickets by urgency, impact, and required resolution team.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-cs">Customer Service</span>
-              <span class="tag tag-done">✓ Done</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Priority matrix (P0–P3 by issue type)</div>
-              <div class="subtopic-item">Hot ticket vs. standard ticket handling</div>
-              <div class="subtopic-item">Routing to Operations / Procurement / Sales</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">📊</span>
-              <span class="topic-name">Daily Inbound Tickets Status Report</span>
-            </div>
-            <div class="topic-desc">Automated daily report showing ticket volume, aging, SLA compliance, and pending resolutions.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-cs">Customer Service</span>
-              <span class="tag tag-inprog">⏳ In Progress</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Scripted daily report from Zoho</div>
-              <div class="subtopic-item">Aging buckets: 0-24h, 24-48h, 48h+</div>
-              <div class="subtopic-item">Variable cost tracking by ticket age</div>
-            </div>
-          </div>
-
-          <div class="topic" data-modes="air ocean">
-            <div class="topic-top">
-              <span class="topic-icon">🔄</span>
-              <span class="topic-name">SOP Amendment &amp; Communication Process</span>
-            </div>
-            <div class="topic-desc">Internal process for requesting, reviewing, approving, and communicating SOP changes to all stakeholders.</div>
-            <div class="topic-tags">
-              <span class="tag tag-both">Both</span>
-              <span class="tag tag-done">✓ Done</span>
-              <span class="tag tag-p0">P0</span>
-            </div>
-            <div class="subtopics">
-              <div class="subtopic-item">Change Request form submission</div>
-              <div class="subtopic-item">Review &amp; approval workflow</div>
-              <div class="subtopic-item">Versioning &amp; nomenclature rules</div>
-              <div class="subtopic-item">Team communication &amp; acknowledgment process</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /phase-grid -->
 </div><!-- /canvas -->
 
 <script>
-  function togglePhase(hdr) {
-    hdr.closest('.phase').classList.toggle('open');
-  }
-  function expandAll() {
-    document.querySelectorAll('.phase').forEach(p => p.classList.add('open'));
-  }
-  function collapseAll() {
-    document.querySelectorAll('.phase').forEach(p => p.classList.remove('open'));
-  }
-  function filterTopics(mode, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.topic').forEach(t => {
-      if (mode === 'all') {
-        t.style.display = '';
+  let currentMode = 'all';
+
+  function search() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const rows = document.querySelectorAll('.sop-row');
+    let visible = 0;
+
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      const modes = (row.dataset.modes || '');
+      const modeOk = currentMode === 'all' || modes.includes(currentMode);
+      const searchOk = !q || text.includes(q);
+      const show = modeOk && searchOk;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+
+      // Highlight matching text
+      if (q && show) {
+        row.querySelectorAll('.sop-name, .sop-desc').forEach(el => {
+          const orig = el.dataset.orig || el.textContent;
+          el.dataset.orig = orig;
+          const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+          el.innerHTML = orig.replace(re, '<mark>$1</mark>');
+        });
       } else {
-        const modes = t.dataset.modes || '';
-        t.style.display = modes.includes(mode) ? '' : 'none';
+        row.querySelectorAll('.sop-name, .sop-desc').forEach(el => {
+          if (el.dataset.orig) el.textContent = el.dataset.orig;
+        });
       }
     });
-  }
-</script>
 
+    // Hide empty sections
+    document.querySelectorAll('.cat-section').forEach(sec => {
+      const anyVisible = Array.from(sec.querySelectorAll('.sop-row')).some(r => r.style.display !== 'none');
+      sec.style.display = anyVisible ? '' : 'none';
+    });
+
+    const countEl = document.getElementById('searchCount');
+    countEl.textContent = q || currentMode !== 'all' ? `${visible} SOP${visible !== 1 ? 's' : ''} shown` : '';
+    document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function filterMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    search();
+  }
+
+  // Count linked SOPs on load
+  window.onload = () => {
+    const total = document.querySelectorAll('.sop-row').length;
+    const linked = document.querySelectorAll('.open-btn.has-link').length;
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('linkedCount').textContent = linked;
+  };
+</script>
 </body>
 </html>
