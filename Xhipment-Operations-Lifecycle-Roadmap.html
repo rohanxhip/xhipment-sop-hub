@@ -230,6 +230,12 @@
   .dp-row { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; }
   .dp-row::before { content: '▸'; color: #3b82f6; font-size: 10px; margin-top: 2px; flex-shrink: 0; }
   .dp-kpi { font-size: 10px; padding: 2px 8px; border-radius: 6px; background: rgba(59,130,246,0.15); color: #60a5fa; font-weight: 600; margin-top: 10px; display: inline-block; }
+  .dp-sops { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .dp-sops-title { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
+  .dp-sop-link { display: flex; align-items: center; gap: 7px; padding: 6px 10px; margin-bottom: 5px; border-radius: 8px; background: rgba(37,99,235,0.12); border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.15s; }
+  .dp-sop-link:hover { background: rgba(37,99,235,0.25); border-color: rgba(59,130,246,0.5); color: #bfdbfe; }
+  .dp-sop-link .sop-arrow { margin-left: auto; font-size: 10px; color: #3b82f6; }
+  .dp-sop-pending { display: flex; align-items: center; gap: 7px; padding: 5px 10px; margin-bottom: 4px; border-radius: 8px; background: rgba(100,116,139,0.1); border: 1px solid rgba(100,116,139,0.15); color: #64748b; font-size: 12px; font-style: italic; }
 
   /* ── LEGEND BOX ── */
   .legend-box {
@@ -337,7 +343,14 @@
             <div class="dp-row">Quote TAT: &lt;4 hours for standard lanes</div>
             <div class="dp-row">Customer onboarding time: &lt;24 hours</div>
             <div class="dp-row">Outstanding receivables &lt;45 days</div>
-            <div class="dp-kpi">🔗 SOPs: FedEx Quoting Tool, Disaggregated Calculator</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1NkHHNXhGqaHj1VFj9tRts0BropVbVMHQ86upuy51J9k/edit" target="_blank">FedEx IN2US Quoting Tool SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/17-flLH8GT91uuWOYR6MVkzz0fhmPd72jxJ71MRZLEKk/edit" target="_blank">Disaggregated Calculator — IN2US Air SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Io2fIJpiq3zQh9xRgfLcQA9TFi12XwGyd-OfMTD1KC4/edit" target="_blank">Cargo Insurance Procurement Guide <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 Customer KYC / Onboarding SOP — coming soon</div>
+              <div class="dp-sop-pending">📎 Payment & Collections SOP — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -385,7 +398,15 @@
             <div class="dp-row">Pickup vendor confirmation rate &gt;95%</div>
             <div class="dp-row">Procurement-to-ops handoff completeness score</div>
             <div class="dp-row">Vendor invoice accuracy rate</div>
-            <div class="dp-kpi">🔗 SOPs: FedEx Quoting Tool, Disaggregated Calculator, ICL Payments</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1NkHHNXhGqaHj1VFj9tRts0BropVbVMHQ86upuy51J9k/edit" target="_blank">FedEx IN2US Quoting Tool SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/17-flLH8GT91uuWOYR6MVkzz0fhmPd72jxJ71MRZLEKk/edit" target="_blank">Disaggregated Calculator — IN2US Air SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Rz7OeeekLbVlEg3igkO9qpT4lZOf8Qrs_cMXk-8UB3E/edit" target="_blank">Container Booking SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Uc5DlCP5-293PvQjhWstbGiYSh87Q2msEDaIuzbPRtQ/edit" target="_blank">XPO Booking Process <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 ICL Payments & Settlement SOP — coming soon</div>
+              <div class="dp-sop-pending">📎 Vendor Performance Monitoring SOP — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -426,7 +447,16 @@
             <div class="dp-row">Doc verification TAT: &lt;2 hours from receipt</div>
             <div class="dp-row">AD Code registration completion: pre-first shipment</div>
             <div class="dp-row">Exception ticket rate per 100 shipments</div>
-            <div class="dp-kpi">🔗 SOPs: Doc Verification SOP, AD Code Guide, Exception FAQ</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Z0YsCOEZnfvW16GkjG2-wEKlvDgzeZnKa3mKY_JH4rs/edit" target="_blank">New Customer Document Verification SOP (Air) <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1KffH2KmtHxba_0LVpFfssRf_bEbiogR972wOFSqvNF8/edit" target="_blank">Export Document Collection / Verification SOP v3 <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Z-tT7FJ4CHusQjgij9htRJFy2D9fTDNKmswwF8uZF10/edit" target="_blank">Export Document Verification SOP (Ocean v2) <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1ENmnyMyzwdyBn8kMnYNKUS2zHCI270P6jVPN-7oozac/edit" target="_blank">AD Code &amp; IFSC Registration Guide (Air) <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1UrfgkzXRuSijxh4tlnrJVv7hrX-ROCzBQ4_XxWReOf4/edit" target="_blank">AD Code &amp; IFSC Registration Guide (Ocean) <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1KJhWqMGzeka7gNbMbviAVKIDBqbHDQnixOoT9nUKfHU/edit" target="_blank">Document Verification — Exception Handling Guide (Ocean) <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Whh_VQo7VODvFeI4KSxjiZ7Oxu5vR5wsCV5CYpFoL70/edit" target="_blank">Checklist Verification Guide <span class="sop-arrow">→</span></a>
+            </div>
           </div>
         </div>
       </div>
@@ -473,7 +503,14 @@
             <div class="dp-row">Vendor no-show rate: &lt;2%</div>
             <div class="dp-row">Cargo damage at pickup: &lt;0.1%</div>
             <div class="dp-row">Pickup-to-port/CFS TAT within agreed window</div>
-            <div class="dp-kpi">🔗 SOPs: Pickup Operations SOP (in progress)</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/11dTWVFY3pOiVRj6zdkDTFp6xQBxvNihy4BODu8d5uYs/edit" target="_blank">Ocean Pickup Operations SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/16WSweBVY-xqW1po1eiqhfOCV8fbeIjNoNXnG1Bowo-s/edit" target="_blank">Ocean Origin Detention Policy <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1PGjFSeuyZLhtqEsmyNIVW8w-57eWTt7fQqxPHFtU3ls/edit" target="_blank">Marking and Labeling Guide <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 Air Pickup Execution Checklist — in progress (P0)</div>
+              <div class="dp-sop-pending">📎 Milestone &amp; TAT Tracking SOP — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -509,7 +546,14 @@
             <div class="dp-row">Gross margin per consol: reviewed before cut-off</div>
             <div class="dp-row">Margin variance &lt;5% vs. booked quote</div>
             <div class="dp-row">Consol creation lead time vs. vessel cut-off</div>
-            <div class="dp-kpi">🔗 SOPs: Consol Creation SOP (needed — P0)</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1EE_VzIn0JJp_RcOMgeFaq2HyKW8Xeouckvi68q_JeBY/edit" target="_blank">Ocean IN2US End-to-End SOP v3 <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1m2UFNzlRhpjGm7_XQshgULElka8Gu3nyGvoVg9msEnk/edit" target="_blank">Xhipment Air Export Ops Guide <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 Consol Creation &amp; Quote ID Mapping SOP — P0 priority</div>
+              <div class="dp-sop-pending">📎 LCL Co-Load RFQ Process — coming soon</div>
+              <div class="dp-sop-pending">📎 ULD Build-up &amp; HAWB-MAWB Mapping (Air) — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -560,7 +604,16 @@
             <div class="dp-row">Cut-off compliance: &gt;98% shipments make nominated vessel/flight</div>
             <div class="dp-row">Label generation TAT: same day as booking confirmation</div>
             <div class="dp-row">CI/PL rejection rate at customs: &lt;1%</div>
-            <div class="dp-kpi">🔗 SOPs: SI Filing, FedEx Label, CI/PL Guide, XAP Guide</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1kNUTgr9jGY1iVIVMxf9AyoCSbNn93MXG-jEGE6SAorI/edit" target="_blank">Ocean Exports SOP v3 <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1m2UFNzlRhpjGm7_XQshgULElka8Gu3nyGvoVg9msEnk/edit" target="_blank">Xhipment Air Export Ops Guide <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1lTXvjUpVs2uJ9z9dIh8L_z0mAM5XckDO-O6RtmLPy0o/edit" target="_blank">UK–US Air Ops SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1Uo-ckUa9WW-w-MhJZG13N5sQBVSAjbrKRtAYsyRdJ5o/edit" target="_blank">Shipping Instructions Guide <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1M7k5wx_6UVcR4YrI0koHfokausRZB5doy7AEhfZOygA/edit" target="_blank">FedEx Shipping Label Creation SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1EE_VzIn0JJp_RcOMgeFaq2HyKW8Xeouckvi68q_JeBY/edit" target="_blank">Ocean IN2US End-to-End SOP v3 <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 XAP Shipment Execution &amp; Milestones Guide — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -599,7 +652,15 @@
             <div class="dp-row">ISF filing: 100% before 24h vessel departure</div>
             <div class="dp-row">Customs hold/exam rate: &lt;3% of shipments</div>
             <div class="dp-row">Duty recovery rate: 100% from shipper on time</div>
-            <div class="dp-kpi">🔗 SOPs: Duty Assessment Guide, Master CI SOP, US Clearance SOP</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/15Vf-BNRbCI7neePkn2D0AdxEyfGs51Uivr3v20NU4yI/edit" target="_blank">Import Clearance SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1cna3GgFAyVuXZlc9abOMkpIlpb3qX2n7lLswCE_aAew/edit" target="_blank">Ocean Import Clearance SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/196O5gMccujpuJkOGzP5ROKTHH62XYs9JEf2muZfC1-A/edit" target="_blank">Customs &amp; Freight Release Check Guide <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 Export Shipping Bill Filing — India ICES — coming soon</div>
+              <div class="dp-sop-pending">📎 ISF 10+2 / AMS Filing (US Imports) — coming soon</div>
+              <div class="dp-sop-pending">📎 CBP Exam Response &amp; Duty Payment SOP — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -649,7 +710,13 @@
             <div class="dp-row">Customer update frequency: at each milestone</div>
             <div class="dp-row">Rollover / cancellation recovery TAT: &lt;24 hours</div>
             <div class="dp-row">Pre-alert sent: 2+ days before vessel arrival</div>
-            <div class="dp-kpi">🔗 SOPs: Exception Management &amp; Troubleshooting Guide v3</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/spreadsheets/d/1vap14g--BXYDr8GCX7U3WeJ1j4FLjSfm0qJJff7k6Do/edit?gid=1298631930" target="_blank">Exception Management &amp; Troubleshooting Guide v3 <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1K2u1l82zLlWQm5MHNLTuu-ymFuYmay10Ogmacov_j_k/edit" target="_blank">Container ETA Changes SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1lTXvjUpVs2uJ9z9dIh8L_z0mAM5XckDO-O6RtmLPy0o/edit" target="_blank">UK–US Air Ops SOP <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 Pre-Arrival Notification &amp; Destination Agent Alert SOP — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -685,7 +752,21 @@
             <div class="dp-row">POD collection TAT: within 24 hours of delivery</div>
             <div class="dp-row">FBA appointment adherence: &gt;95%</div>
             <div class="dp-row">Shipment closure in XAP within 48 hours of POD</div>
-            <div class="dp-kpi">🔗 SOPs: Master CI SOP (done) | Delivery &amp; POD SOPs (needed)</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1FnRIx8zq8iguf18MeZCQKl-Oc9bYTTpa5ZK2YaP_e4s/edit" target="_blank">SWB Release &amp; Freight Release SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1etbewPjHUQ4nVLJ373y78eFkagWsZOp7S_SCwTDb-GY/edit" target="_blank">OOCL B/L &amp; Freight Release Process <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/13ElNGZpbJP1DGRWGJFTO6IPfPk4mT2WDGCX7boRMBvw/edit" target="_blank">CMA CGM B/L / Freight Release <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1cna3GgFAyVuXZlc9abOMkpIlpb3qX2n7lLswCE_aAew/edit" target="_blank">Ocean Import Clearance SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1A43n5pJTTXx3l7YeTq2Aem9egKXHZwV-xvV_3nCK-5U/edit" target="_blank">Drayage SOPs <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1G3tkMnNwaQqvTVJsjR3oLZhJXYvLPg7MY3hagAtTawU/edit" target="_blank">SOP: Transloading <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1TFioYB4c0kAHbvgq20e1ONwyt-GUu32yCYLpMukkABA/edit" target="_blank">Amazon Freight Booking Guidelines <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1twC_spJR0RyTBHoVgt7TA1a5jO_iSUtB0M8bH3IWpqM/edit" target="_blank">Amazon Carrier Central — Appointment Creation <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1DZ7GbKTPWqbSFZN6k8bVi2VFGvUjBmdBcRbtXZh6_BY/edit" target="_blank">Walmart Appointment Guide <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1O0aDKmbAI7vRlYpui4Wc7z1H7HwlFiSnnXf9FXtI9ow/edit" target="_blank">OpenDocks Systems SOP <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1SHa1nRsa_n707r8OwqwsYK7LEatw-IBoep1Eomv3LrM/edit" target="_blank">FC Redirection Guide <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 POD Collection &amp; XAP Shipment Closure SOP — coming soon</div>
+            </div>
           </div>
         </div>
       </div>
@@ -732,7 +813,13 @@
             <div class="dp-row">Ticket resolution rate within SLA: &gt;90%</div>
             <div class="dp-row">Customer satisfaction (CSAT): &gt;4.2 / 5</div>
             <div class="dp-row">Open ticket aging &gt;48 hours: &lt;5% of total</div>
-            <div class="dp-kpi">🔗 SOPs: Zoho Ticket SOP, SOP Amendment Process</div>
+            <div class="dp-sops">
+              <div class="dp-sops-title">📄 Related SOPs</div>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/1-MUKFnn70-Z0eUsF8XxlbaxNUrsHa1Lc3HLfjijFLZA/edit" target="_blank">ICT Mail Blurb Template <span class="sop-arrow">→</span></a>
+              <a class="dp-sop-link" href="https://docs.google.com/document/d/10s2G0GNkfpvl2ukD-oIAWDq45nCL0hrxYjixwosxKgw/edit" target="_blank">Xhipment SOP Creation Guide <span class="sop-arrow">→</span></a>
+              <div class="dp-sop-pending">📎 Zoho Desk Ticket Handling &amp; Triage SOP — in progress</div>
+              <div class="dp-sop-pending">📎 Daily Ticket Status &amp; Aging Report SOP — in progress</div>
+            </div>
           </div>
         </div>
       </div>
